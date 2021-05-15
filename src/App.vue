@@ -1,15 +1,16 @@
 <template>
-  <AppHeader/>
+  <AppLayout/>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue'
+import AppLayout from './components/AppLayout.vue'
+
 import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    AppHeader,
+    AppLayout,
   },
   methods: {
     ...mapActions([ 'getUserStatus' ]),
@@ -30,7 +31,6 @@ body, html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 

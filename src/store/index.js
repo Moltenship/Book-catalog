@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
-import { SET_AUTH_STATUS, SET_USER } from '../utils/mutation-types'
-import { signInWithGoogle, fetchUserStatus } from '../api/firebase'
+import { SET_AUTH_STATUS, SET_USER, SET_BOOKS } from '../utils/mutation-types'
+import { logInWithGoogle, fetchUserStatus, logOut } from '../api/firebaseAuth'
+import { fetchBooks } from '../api/firebaseCRUD'
 
 export default createStore({
   state: {
     isLoggedIn: false,
     user: null,
+    books: [],
   },
   mutations: {
     [SET_AUTH_STATUS](state) {
@@ -14,13 +16,26 @@ export default createStore({
     [SET_USER](state, user) {
       state.user = user
     },
+    [SET_BOOKS](state, books) {
+      state.books = [ ...books ]
+    },
   },
   actions: {
     async signIn({ commit }) {
-      await signInWithGoogle(user => commit(SET_USER, user))
+      await logInWithGoogle(user => commit(SET_USER, user))
+      commit(SET_AUTH_STATUS)
     },
     async getUserStatus({ commit }) {
       await fetchUserStatus(user => commit(SET_USER, user))
+    },
+    async signOut({ commit }) {
+      await logOut()
+      commit(SET_USER, null)
+      commit(SET_AUTH_STATUS)
+    },
+    async getBooks({ commit }) {
+      const books = await fetchBooks()
+      commit(SET_BOOKS, books)
     },
   },
   modules: {
@@ -31,6 +46,9 @@ export default createStore({
     },
     user(state) {
       return state.user
+    },
+    books(state) {
+      return state.books
     },
   },
 })

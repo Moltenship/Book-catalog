@@ -1,33 +1,41 @@
 <template>
   <el-header class='header' height='64px'>
     <div class='header__logo'>Book catalog 📚</div>
-    <template v-if='user'>
-      <div class='header__user user'>
+    <template v-if='isLoggedIn'>
+      <a href='#' class='header__user user' @click='handleSignOut'>
         <div class='user__name'>
           {{user.displayName}}
         </div>
         <img :src='user.photoURL' class='user__image'>
-      </div>
+      </a>
     </template>
     <el-button
-      v-if='!user'
+      v-else
       type='primary'
       class='header__button'
-      @click='handleClick'>Sign In</el-button>
+      @click='handleSignIn'>Sign In</el-button>
   </el-header>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters([ 'user' ]),
+    ...mapGetters([ 'user', 'isLoggedIn' ]),
   },
   methods: {
-    ...mapActions([ 'signIn' ]),
-    async handleClick() {
-      await this.signIn()
+    ...mapActions([ 'signIn', 'signOut' ]),
+    ...mapMutations([ 'SET_AUTH_STATUS' ]),
+    async handleSignIn() {
+      if (this.user) {
+        this.SET_AUTH_STATUS()
+      } else {
+        await this.signIn()
+      }
+    },
+    async handleSignOut() {
+      await this.signOut()
     },
   },
 }
@@ -46,6 +54,7 @@ export default {
   }
   &__user {
     margin-left: auto;
+    color: inherit;
   }
 }
 
