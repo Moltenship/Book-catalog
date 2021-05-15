@@ -1,5 +1,5 @@
 <template>
-  <AppLayout/>
+  <app-layout/>
 </template>
 
 <script>

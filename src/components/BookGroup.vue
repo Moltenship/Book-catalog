@@ -1,13 +1,10 @@
 <template>
   <div class='group'>
-    <el-collapse v-model='activeNames' @change='handleChange'>
+    <el-collapse>
       <el-collapse-item
-        v-for='(group, i) in groups'
-        :key='i'
-        :title='group'
-        name='1'>
-        <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
-        <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
+        name='1'
+        :title='formattedTitle'>
+        <div v-for='book in groupedBooks' :key='book.id'>{{book}}</div>
       </el-collapse-item>
       <!-- <el-collapse-item title='Feedback' name='2'>
         <div>Operation feedback: enable the users to clearly perceive their operations by style updates and interactive effects;</div>
@@ -27,25 +24,21 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import {  mapGetters } from 'vuex'
+
 
 export default {
-  data() {
-    return {
-      groupCriteria: 'publication_year',
-    }
+  props: {
+    group: {
+    },
+    groupedBooks: {
+    },
   },
   computed: {
     ...mapGetters([ 'books' ]),
-    groups() {
-      return [ ...new Set(this.books.map(book => book[this.groupCriteria])) ]
+    formattedTitle() {
+      return typeof this.group === 'object' ? this.group.join('; ') : this.group?.toString()
     },
-  },
-  methods: {
-    ...mapActions([ 'getBooks' ]),
-  },
-  async created() {
-    await this.getBooks()
   },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <AppHeader/>
-  <AppContent></AppContent>
+  <app-header/>
+  <app-content></app-content>
 </template>
 
 <script>
