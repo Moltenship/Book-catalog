@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <el-select v-model='selectValue' placeholder='Select grouping criteria'>
-      <el-option
-        v-for='item in options'
-        :key='item.value'
-        :label='item.label'
-        :value='item.value'></el-option>
-    </el-select>
+  <div class='container'>
+    <div class='inputs'>
+      <el-select class='inputs__select' v-model='selectValue' placeholder='Select grouping criteria'>
+        <el-option
+          v-for='item in options'
+          :key='item.value'
+          :label='item.label'
+          :value='item.value'></el-option>
+      </el-select>
+      <el-button type='primary' class='inputs__button'>Add new book</el-button>
+    </div>
     <div>
       <book-group
         v-for='group in groupItems'
@@ -27,7 +30,7 @@ export default {
   },
   data() {
     return {
-      selectValue: 'rating',
+      selectValue: 'publication_year',
       options: [ {
         value: 'publication_year',
         label: 'Publication year',
@@ -51,7 +54,7 @@ export default {
             return book[this.selectValue]
           }
         }),
-      ) ].sort((a, b) => b - a)
+      ) ].sort().reverse().filter(book => book).flat()
     },
   },
   methods: {
@@ -59,8 +62,12 @@ export default {
     groupBooks(group) {
       return this.books.filter(
         (book) => {
-          if (this.selectValue in book)
+          if (this.selectValue in book) {
+            if (Array.isArray(book[this.selectValue])) {
+              return book[this.selectValue].includes(group)
+            }
             return book[this.selectValue] === group
+          }
         })
     },
   },
@@ -70,6 +77,22 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped lang="scss">
+.container {
+  width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  .inputs {
+    display: flex;
+    gap: 16px;
+    &__select {
+      width: 80%;
+    }
+    &__button {
+      flex: 1;
+    }
+  }
+}
 </style>

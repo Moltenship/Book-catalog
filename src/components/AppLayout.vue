@@ -1,6 +1,8 @@
 <template>
-  <app-header/>
-  <app-content></app-content>
+  <div class='layout'>
+    <app-header/>
+    <app-content></app-content>
+  </div>
 </template>
 
 <script>
@@ -14,5 +16,9 @@ export default {
 </script>
 
 <style>
-
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+}
 </style>
