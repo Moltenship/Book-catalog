@@ -28,11 +28,11 @@ export default {
     ...mapActions([ 'signIn', 'signOut' ]),
     ...mapMutations([ 'SET_AUTH_STATUS' ]),
     async handleSignIn() {
-      if (this.user) {
+      if (this.user)
         this.SET_AUTH_STATUS()
-      } else {
+      else
         await this.signIn()
-      }
+
     },
     async handleSignOut() {
       await this.signOut()
@@ -71,5 +71,4 @@ export default {
     width: 32px;
   }
 }
-
 </style>

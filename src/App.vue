@@ -13,10 +13,11 @@ export default {
     AppLayout,
   },
   methods: {
-    ...mapActions([ 'getUserStatus' ]),
+    ...mapActions([ 'getUserStatus', 'getBooks' ]),
   },
   async created() {
     await this.getUserStatus()
+    await this.getBooks()
   },
 }
 </script>

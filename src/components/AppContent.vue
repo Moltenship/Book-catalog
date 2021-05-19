@@ -1,5 +1,5 @@
 <template>
-  <div class='container'>
+  <div class='container' v-if='books.length > 0'>
     <div class='inputs'>
       <el-select class='inputs__select' v-model='selectValue' placeholder='Select grouping criteria'>
         <el-option
@@ -8,9 +8,17 @@
           :label='item.label'
           :value='item.value'></el-option>
       </el-select>
-      <el-button type='primary' class='inputs__button'>Add new book</el-button>
+      <el-button v-if='isLoggedIn' type='primary' class='inputs__button'>Add new book</el-button>
     </div>
     <div>
+      <div class='recommended-book'>
+        <h2 class='recommended-book__heading'>Recommended book</h2>
+        <div class='recommended-book__name'>{{recommended.name}}</div>
+        <div class='recommended-book__author'>Author(s): {{recommended.authors.join(';')}}</div>
+        <div class='recommended-book__year'>Publication year: {{recommended.publication_year}}</div>
+        <div class='recommended-book__rating'>Rating: {{recommended.rating}}</div>
+        <div v-if='recommended?.ISBN' class='recommended-book__ISBN'>ISBN: {{recommended.ISBN}}</div>
+      </div>
       <book-group
         v-for='group in groupItems'
         :key='group'
@@ -46,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([ 'books' ]),
+    ...mapGetters([ 'books', 'isLoggedIn' ]),
     groupItems() {
       return [ ...new Set(this.books.map(
         (book) => {
@@ -55,6 +63,13 @@ export default {
           }
         }),
       ) ].sort().reverse().filter(book => book).flat()
+    },
+    recommended() {
+      const currentDate = new Date()
+      const sortedArray = this.books.filter(book => currentDate.getFullYear() - book.publication_year <= 3).sort((a, b) => b.rating - a.rating)
+      const maxValue = sortedArray[0].rating
+      const suitableBooks = sortedArray.filter(book => book.rating === maxValue)
+      return suitableBooks[Math.floor(Math.random() * suitableBooks.length)]
     },
   },
   methods: {
@@ -71,9 +86,6 @@ export default {
         })
     },
   },
-  async created() {
-    await this.getBooks()
-  },
 }
 </script>
 
@@ -84,15 +96,28 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  .inputs {
-    display: flex;
-    gap: 16px;
-    &__select {
-      width: 80%;
-    }
-    &__button {
-      flex: 1;
-    }
+}
+.inputs {
+  display: flex;
+  gap: 16px;
+  &__select {
+    flex: 5;
+  }
+  &__button {
+    flex: 1;
+  }
+}
+.recommended-book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 20px;
+  &__heading {
+    margin: 0;
+  }
+  &__name {
+    font-weight: bolder;
   }
 }
 </style>

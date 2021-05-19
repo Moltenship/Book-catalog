@@ -4,11 +4,8 @@
       <el-collapse-item
         name='1'
         :title='formattedTitle'>
-        <div class='book' v-for='book in sortedBooks' :key='book.id'>
-          <div class='book__name'>{{book.name}}</div>
-          <div class='book__authors'>{{book.authors.join(' ')}}</div>
-          <div class='book__rating' v-if='book?.rating'>Rating: {{book.rating}}</div>
-          <div class='book__isbn' v-if='book?.ISBN'>ISBN: {{book.ISBN}}</div>
+        <div v-for='book in sortedBooks' :key='book.id'>
+          <book-item :book='book' />
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -16,10 +13,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
+import BookItem from './BookItem.vue'
 
 export default {
+  components: {
+    BookItem,
+  },
   props: {
     group: {
       required: true,
@@ -30,14 +29,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([ 'books' ]),
     formattedTitle() {
+      debugger
       return Array.isArray(this.group) ? this.group.join('; ') : this.group.toString()
     },
     sortedBooks() {
       return [ ...this.groupedBooks ].sort((a,b) => a.name.localeCompare(b.name))
     },
   },
+
 }
 </script>
 
@@ -45,13 +45,4 @@ export default {
 .group {
   padding: 0 4px 0 16px;
 }
-.book {
-  border-bottom: 1px solid #EBEEF5;
-  border-top: 1px solid #EBEEF5;
-
-  &__name {
-    font-weight: bold;
-  }
-}
-
 </style>

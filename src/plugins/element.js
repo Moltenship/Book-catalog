@@ -1,4 +1,4 @@
-import { ElButton, ElHeader, ElCollapse, ElCollapseItem, ElSelect, ElOption } from 'element-plus'
+import { ElButton, ElHeader, ElCollapse, ElCollapseItem, ElSelect, ElOption, ElDialog } from 'element-plus'
 
 export default (app) => {
   app.use(ElButton)
@@ -7,4 +7,5 @@ export default (app) => {
   app.use(ElCollapseItem)
   app.use(ElSelect)
   app.use(ElOption)
+  app.use(ElDialog)
 }
