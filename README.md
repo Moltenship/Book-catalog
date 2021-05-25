@@ -1,6 +1,8 @@
 # book-catalog
 
+
 ## Project setup
+You need firebase config file called `firebaseConfig.js`, you can see example at [firebase example config](https://github.com/Moltenship/Book-catalog/blob/master/src/utils/firebaseConfig.example.js)
 ```
 npm install
 ```
