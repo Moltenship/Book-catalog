@@ -1,3 +1,6 @@
 export const SET_AUTH_STATUS = 'SET_AUTH_STATUS'
 export const SET_USER = 'SET_USER'
 export const SET_BOOKS = 'SET_BOOKS'
+export const SET_BOOK = 'SET_BOOK'
+export const ADD_BOOK = 'ADD_BOOK'
+export const REMOVE_BOOK = 'REMOVE_BOOK'

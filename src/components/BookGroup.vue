@@ -4,9 +4,9 @@
       <el-collapse-item
         name='1'
         :title='formattedTitle'>
-        <div v-for='book in sortedBooks' :key='book.id'>
+        <template v-for='book in sortedBooks' :key='book.id'>
           <book-item :book='book' />
-        </div>
+        </template>
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -30,7 +30,6 @@ export default {
   },
   computed: {
     formattedTitle() {
-      debugger
       return Array.isArray(this.group) ? this.group.join('; ') : this.group.toString()
     },
     sortedBooks() {

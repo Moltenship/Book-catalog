@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
-import { SET_AUTH_STATUS, SET_USER, SET_BOOKS } from '../utils/mutation-types'
+import { SET_AUTH_STATUS, SET_USER, SET_BOOKS, ADD_BOOK, REMOVE_BOOK, SET_BOOK } from '../utils/mutation-types'
 import { logInWithGoogle, fetchUserStatus, logOut } from '../api/firebaseAuth'
-import { fetchBooks } from '../api/firebaseCRUD'
+import { fetchBooks, createId, setBook, deleteBookById } from '../api/firebaseCRUD'
+import { vue } from 'vue'
 
 export default createStore({
   state: {
@@ -19,6 +20,20 @@ export default createStore({
     [SET_BOOKS](state, books) {
       state.books = [ ...books ]
     },
+    [SET_BOOK](state, bookData) {
+      const index =  state.books.findIndex(book => book.id === bookData.id)
+      state.books.splice(index, 1)
+      state.books.push(bookData)
+    },
+    [ADD_BOOK](state, book) {
+      state.books.push(book)
+    },
+    [REMOVE_BOOK](state, bookId) {
+      const index = state.books.findIndex((book, index) => {
+        if (book.id === bookId) return index
+      })
+      state.books.splice(index, 1)
+    },
   },
   actions: {
     async signIn({ commit }) {
@@ -33,9 +48,23 @@ export default createStore({
       commit(SET_USER, null)
       commit(SET_AUTH_STATUS)
     },
+    async createBook({ commit }, bookData) {
+      const id = createId()
+      bookData.id = id
+      await setBook(bookData)
+      commit(ADD_BOOK, bookData)
+    },
+    async editBook({ commit }, bookData) {
+      await setBook(bookData)
+      commit(SET_BOOK, bookData)
+    },
     async getBooks({ commit }) {
       const books = await fetchBooks()
       commit(SET_BOOKS, books)
+    },
+    async deleteBook({ commit }, bookId) {
+      await deleteBookById(bookId)
+      commit(REMOVE_BOOK, bookId)
     },
   },
   modules: {

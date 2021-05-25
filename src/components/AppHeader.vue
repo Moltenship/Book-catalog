@@ -9,11 +9,12 @@
         <img :src='user.photoURL' class='user__image'>
       </a>
     </template>
-    <el-button
-      v-else
-      type='primary'
-      class='header__button'
-      @click='handleSignIn'>Sign In</el-button>
+    <template v-else>
+      <el-button
+        type='primary'
+        class='header__button'
+        @click='handleSignIn'>Sign In</el-button>
+    </template>
   </el-header>
 </template>
 
