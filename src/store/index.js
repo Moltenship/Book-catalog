@@ -1,8 +1,7 @@
 import { createStore } from 'vuex'
-import { SET_AUTH_STATUS, SET_USER, SET_BOOKS, ADD_BOOK, REMOVE_BOOK, SET_BOOK } from '../utils/mutation-types'
+import { SET_AUTH_STATUS, SET_USER, SET_BOOKS, ADD_BOOK, REMOVE_BOOK, SET_BOOK } from './mutation-types'
 import { logInWithGoogle, fetchUserStatus, logOut } from '../api/firebaseAuth'
 import { fetchBooks, createId, setBook, deleteBookById } from '../api/firebaseCRUD'
-import { vue } from 'vue'
 
 export default createStore({
   state: {

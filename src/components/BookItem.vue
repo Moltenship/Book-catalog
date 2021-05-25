@@ -1,7 +1,7 @@
 <template>
   <div class='book'>
     <div class='book__name'>{{book.name}}</div>
-    <div class='book__authors'>{{book.authors.join(' ')}}</div>
+    <div class='book__authors'>{{formattedAuthors}}</div>
     <div class='book__rating' v-if='book?.rating'>Rating: {{book.rating}}</div>
     <div class='book__isbn' v-if='book?.ISBN'>ISBN: {{book.ISBN}}</div>
     <template v-if='isLoggedIn'>
@@ -11,7 +11,7 @@
           type='danger'
           class='book__delete-button'>Delete book</el-button>
         <el-button @click='isEditOpen = true' type='primary' class='book__edit-button'>Edit book</el-button>
-        <el-dialog v-model='isEditOpen' title='Edit book'>
+        <el-dialog v-model='isEditOpen' title='Edit book' destroy-on-close>
           <book-form @submit-form='isEditOpen = false' :book-data='book'></book-form>
           <el-button @click='isEditOpen = false'>Cancel</el-button>
         </el-dialog>
@@ -37,6 +37,9 @@ export default {
   },
   computed: {
     ...mapGetters([ 'isLoggedIn' ]),
+    formattedAuthors() {
+      return this.book?.authors.join(',')
+    },
   },
   data() {
     return {
@@ -46,8 +49,6 @@ export default {
   methods: {
     ...mapActions([ 'deleteBook' ]),
     async handleDelete() {
-      console.log(this.book.id)
-      console.log(this.book.name)
       this.deleteBook(this.book.id)
     },
   },

@@ -12,11 +12,11 @@ export async function fetchBooks() {
     const id = doc.id
     return { id, ...data }
   })
-  window.books = books
   return books
 }
 
 export async function setBook(bookData) {
+  bookData.authors = bookData.authors.split(',').map(i => i.trim())
   booksCollection.doc(bookData.id).set(bookData)
 }
 

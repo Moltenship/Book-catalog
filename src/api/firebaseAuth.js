@@ -17,7 +17,6 @@ export async function fetchUserStatus(commit) {
 }
 
 export async function logOut() {
-
   try {
     await firebase.auth().signOut()
   } catch (e) {

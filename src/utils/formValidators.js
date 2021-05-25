@@ -1,6 +1,7 @@
 export const checkRating = (rule, value, callback) => {
   setTimeout(() => {
-    if (!Number.isInteger(value)) {
+    if (value === '') callback()
+    if (typeof value !== 'number') {
       callback(new Error('Rating should be a number'))
     } else {
       if (value > 10 || value < 0) {
@@ -11,9 +12,11 @@ export const checkRating = (rule, value, callback) => {
     }
   }, 250)
 }
+
 export const checkPublicationYear = (rule, value, callback) => {
   setTimeout(() => {
-    if (!Number.isInteger(value)) {
+    if (value === '') callback()
+    if (typeof value !== 'number') {
       callback(new Error('Publication year must be a number'))
     } else {
       const currentYear = new Date().getFullYear()
@@ -22,6 +25,18 @@ export const checkPublicationYear = (rule, value, callback) => {
       } else {
         callback()
       }
+    }
+  }, 250)
+}
+
+export const checkISBN = (rule, value, callback) => {
+  const regExp = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
+  setTimeout(() => {
+    if (value === '') callback()
+    if (regExp.test(value)) {
+      callback()
+    } else {
+      callback(new Error('Invalid ISBN'))
     }
   }, 250)
 }

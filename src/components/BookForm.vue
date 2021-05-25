@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { checkPublicationYear, checkRating } from '../utils/formValidators'
+import { checkPublicationYear, checkRating, checkISBN } from '../utils/formValidators'
 import { mapActions } from 'vuex'
 export default {
   props: {
@@ -52,10 +52,12 @@ export default {
         ],
         rating: [
           { validator: checkRating, trigger: [ 'change', 'blur' ] },
-
         ],
         authors: [
           { required: true, message: 'Please enter author name', trigger: 'blur' },
+        ],
+        ISBN: [
+          { validator: checkISBN, trigger: [ 'change', 'blur' ] },
         ],
       },
     }
@@ -77,7 +79,6 @@ export default {
           if (!this.form?.publication_year) {
             delete this.form.publication_year
           }
-          this.form.authors = this.form.authors.split(';')
           if (this.bookData) {
             await this.editBook(this.form)
           } else {
@@ -92,7 +93,8 @@ export default {
   },
   mounted() {
     if (this.bookData) {
-      this.form = this.bookData
+      this.form = { ...this.bookData }
+      this.form.authors = this.form.authors.join(',')
     }
   },
 }

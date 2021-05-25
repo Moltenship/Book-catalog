@@ -10,7 +10,7 @@
       </el-select>
       <template v-if='isLoggedIn'>
         <el-button @click='isModalOpen = true' type='primary' class='inputs__button'>Add new book</el-button>
-        <el-dialog v-model='isModalOpen' title='Create book'>
+        <el-dialog v-model='isModalOpen' title='Create book' destroy-on-close>
           <book-form @submit-form='isModalOpen = false'></book-form>
           <el-button @click='isModalOpen = false'>Cancel</el-button>
         </el-dialog>
@@ -20,7 +20,7 @@
       <div v-if='recommended' class='recommended-book'>
         <h2 class='recommended-book__heading'>Recommended book</h2>
         <div class='recommended-book__name'>{{recommended.name}}</div>
-        <div class='recommended-book__author'>Author(s): {{recommended.authors.join(';')}}</div>
+        <div class='recommended-book__author'>Author(s): {{recommended.authors.join(',')}}</div>
         <div class='recommended-book__year'>Publication year: {{recommended.publication_year}}</div>
         <div class='recommended-book__rating'>Rating: {{recommended.rating}}</div>
         <template v-if='recommended?.ISBN'>
